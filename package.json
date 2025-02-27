@@ -25,5 +25,10 @@
     "@eslint/eslintrc": "^3",
     "eslint": "^9",
     "eslint-config-next": "15.1.0"
+  },
+  "resolutions": {
+    "react": "^17.0.2",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0"
   }
 }
