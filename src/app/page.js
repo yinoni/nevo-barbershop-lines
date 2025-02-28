@@ -1,4 +1,7 @@
 "use client"
+
+require('dotenv').config();
+
 import React, { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,7 +23,7 @@ import { io } from "socket.io-client";
 export default function Home() {
 
 
-  const route = "http://localhost:5000";
+  const route = process.env.SERVER_URL;
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [hour, setHour] = useState(0);
