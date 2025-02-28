@@ -23,7 +23,7 @@ import { io } from "socket.io-client";
 export default function Home() {
 
 
-  const route = process.env.SERVER_URL;
+  const route = process.env.NEXT_PUBLIC_SERVER_URL;
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [hour, setHour] = useState(0);
