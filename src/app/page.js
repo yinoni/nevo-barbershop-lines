@@ -146,7 +146,7 @@ export default function Home() {
       }
       
       <Button sx={{marginTop: 5}} disabled={!checkFormData()} onClick={onSubmit} variant="outlined">קבע תור</Button>
-      <CustomModal contentTxt='!התור נקבע בהצלחה' openModal={openModal} />
+      <CustomModal contentTxt={`התור נקבע בהצלחה!\nבתאריך: ${dayjs(date).format("DD/MM/YYYY")}\nבשעה: ${hour}`} openModal={openModal} />
     </div>
   );
 }
