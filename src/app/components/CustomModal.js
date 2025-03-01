@@ -3,6 +3,7 @@ import { Modal as BaseModal } from "@mui/material";
 import {styled, css} from "@mui/material";
 import successImg from '../../../public/assets/success.svg';
 import Image from "next/image";
+import { lineHeight } from "@mui/system";
 
 const CustomModal = ({contentTxt, openModal}) => {
     return (
@@ -12,8 +13,8 @@ const CustomModal = ({contentTxt, openModal}) => {
             sx={{textAlign: "center"}}
             open={openModal}
         >   
-            <div style={{width: "90%", backgroundColor: 'white', outline: 'none', border: 'none', padding: 100, borderRadius: 10}} className="modal-content">
-                <h2 style={{marginBottom: 50}}>{contentTxt}</h2>
+            <div style={{width: "100%", backgroundColor: 'white', outline: 'none', border: 'none', padding: 100, borderRadius: 10}} className="modal-content">
+                <h3 style={{marginBottom: 50}}>{contentTxt}</h3>
                 <Image alt="image" src={successImg} width={200} />
             </div>
         </Modal>
