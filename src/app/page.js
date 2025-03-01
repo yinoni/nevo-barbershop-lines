@@ -100,7 +100,7 @@ export default function Home() {
     let dataHour = data.hour;
     let currentDateFormatted = dayjs(date).format("DD/MM/YYYY");
 
-    if(dataDate === currentDateFormatted && dataDate.phone !== phone){
+    if(dataDate === currentDateFormatted){
       setHours(hours.filter(hour => dataHour !== hour));
     }
   });
@@ -146,7 +146,7 @@ export default function Home() {
       }
       
       <Button sx={{marginTop: 5}} disabled={!checkFormData()} onClick={onSubmit} variant="outlined">קבע תור</Button>
-      <CustomModal contentTxt={`התור נקבע בהצלחה!\nבתאריך: ${dayjs(date).format("DD/MM/YYYY")}\nבשעה: ${hours[hour]}`} openModal={openModal} />
+      <CustomModal contentTxt='התור נקבע בהצלחה!' date={dayjs(date).format('DD/MM/YYYY')} hour={hours[hour]} openModal={openModal} />
     </div>
   );
 }
