@@ -95,6 +95,7 @@ export default function Home() {
     }
   }
 
+  /*
   socket.on("updatedHours", (data) => {
     let dataDate = data.date;
     let dataHour = data.hour;
@@ -104,6 +105,7 @@ export default function Home() {
       setHours(hours.filter(hour => dataHour !== hour));
     }
   });
+  */
 
   return (
     <div className="container">
