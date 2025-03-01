@@ -95,17 +95,15 @@ export default function Home() {
     }
   }
 
-  /*
   socket.on("updatedHours", (data) => {
     let dataDate = data.date;
     let dataHour = data.hour;
     let currentDateFormatted = dayjs(date).format("DD/MM/YYYY");
 
-    if(dataDate === currentDateFormatted){
+    if(dataDate === currentDateFormatted && data.phone !== phone){
       setHours(hours.filter(hour => dataHour !== hour));
     }
   });
-  */
 
   return (
     <div className="container">
