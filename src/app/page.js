@@ -100,10 +100,10 @@ export default function Home() {
     let dataHour = data.hour;
     let currentDateFormatted = dayjs(date).format("DD/MM/YYYY");
 
-    if(dataDate === currentDateFormatted){
+    if(dataDate === currentDateFormatted && dataDate.phone !== phone){
       setHours(hours.filter(hour => dataHour !== hour));
     }
-  })
+  });
 
   return (
     <div className="container">
