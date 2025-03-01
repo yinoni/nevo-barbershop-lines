@@ -109,10 +109,10 @@ export default function Home() {
     <div className="container">
       <h1 className="logo">MAB</h1>
 
-      <TextField required value={fullName} onChange={onFullNameChange} id="standard-basic" label="שם מלא" variant="standard" />
-      <TextField sx={{marginTop: 4, marginBottom: 4}} required type={"number"} value={phone} onChange={onPhoneChange} id="standard-basic" label="מספר טלפון" variant="standard" />
+      <TextField sx={{ marginBottom: 4}} required value={fullName} onChange={onFullNameChange} id="standard-basic" label="שם מלא" variant="standard" />
+      <TextField sx={{ marginBottom: 1}} required type={"number"} value={phone} onChange={onPhoneChange} id="standard-basic" label="מספר טלפון" variant="standard" />
       <LocalizationProvider fullWidth dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
-        <DemoContainer components={['DatePicker']}>
+        <DemoContainer sx={{ marginTop: 2, height: 520}} components={['DatePicker']}>
           <DatePicker
             value={date} 
             label="בחר תאריך"
@@ -124,7 +124,7 @@ export default function Home() {
 
       {
         hoursComponents.length > 0 ? 
-        <Box sx={{ maxWidth: 100, width: '100%', marginTop: 5, marginBottom: 2 }}>
+        <Box sx={{ maxWidth: 100, width: '100%', marginTop: "-355px", marginBottom: 2 }}>
           <FormControl>
             <InputLabel id="demo-simple-select-label">בחר שעה</InputLabel>
             <Select

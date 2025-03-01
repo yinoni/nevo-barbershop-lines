@@ -45,28 +45,15 @@ a {
 .container{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
-  height: 60%;
+  height: 70%;
   width: 55%;
   margin: auto;
-
+  padding-top: 20px;
 }
 
 .logo{
   margin-bottom: 20px;
-}
-
-@media screen and (max-width: 500px) {
-  #root .container{
-    width: 60%;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 
