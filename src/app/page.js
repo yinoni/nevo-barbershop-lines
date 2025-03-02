@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -18,19 +18,21 @@ import dayjs from "dayjs";
 import axios from "axios";
 import CustomModal from "./components/CustomModal";
 import 'dayjs/locale/en-gb';
-import { io } from "socket.io-client";
+import socket from "./socket";
 
 export default function Home() {
 
-
-  const route = process.env.NEXT_PUBLIC_SERVER_URL;
+  const production = false;
+  const route = production ? process.env.NEXT_PUBLIC_SERVER_URL : "http://localhost:5000";
+  
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [hour, setHour] = useState(0);
   const [date, setDate] = useState(dayjs());
   const [openModal, setOpenModal] = useState(false);
-  const socket = io(route);
   const [hours, setHours] = useState([]);
+  const hoursRef = useRef(hours);
+  const dateRef = useRef(date);
 
   const hoursComponents = hours.map((data, key) => {
     return <MenuItem key={key} value={key}>{data}</MenuItem>
@@ -65,10 +67,21 @@ export default function Home() {
   }
 
   useEffect(() => {
+    socket.connect();
+
     socket.on("connect", () => {
       console.log("Connected to the server!", socket.id);
     });
 
+    socket.on("updatedHours", (data) => {
+      let dataDate = data.date;
+      let dataHour = data.hour;
+      let currentDateFormatted = dayjs(dateRef.current).format("DD/MM/YYYY");
+        
+      if(dataDate === currentDateFormatted){
+        setHours(hoursRef.current.filter(hour => dataHour !== hour));
+      }
+    });
 
     axios.post(`${route}/getHours`, {date: date.format("DD/MM/YYYY")})
     .then(result => {
@@ -77,10 +90,21 @@ export default function Home() {
     })
     .catch(error => {
       console.log("Error! ====> ", error);
-    })
+    });
 
-  }, [])
+    return () => {
+      socket.off("connect");
+    };
 
+  }, []);
+
+  useEffect(() => {
+    hoursRef.current = hours;
+  }, [hours]);
+
+  useEffect(() => {
+    dateRef.current = date;
+  }, [date]);
 
   const onSubmit = async () => {
     if(fullName !== "" || phone !== "" || hour !== -1){
@@ -94,16 +118,6 @@ export default function Home() {
       setOpenModal (true)
     }
   }
-
-  socket.on("updatedHours", (data) => {
-    let dataDate = data.date;
-    let dataHour = data.hour;
-    let currentDateFormatted = dayjs(date).format("DD/MM/YYYY");
-
-    if(dataDate === currentDateFormatted && data.phone !== phone){
-      setHours(hours.filter(hour => dataHour !== hour));
-    }
-  });
 
   return (
     <div className="container">
