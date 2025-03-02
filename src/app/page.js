@@ -22,7 +22,7 @@ import socket from "./socket";
 
 export default function Home() {
 
-  const production = false;
+  const production = true;
   const route = production ? process.env.NEXT_PUBLIC_SERVER_URL : "http://localhost:5000";
   
   const [fullName, setFullName] = useState("");
