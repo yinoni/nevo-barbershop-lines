@@ -19,11 +19,9 @@ import axios from "axios";
 import CustomModal from "./components/CustomModal";
 import 'dayjs/locale/en-gb';
 import socket from "./socket";
+import {route} from './consts.js';
 
 export default function Home() {
-
-  const production = true;
-  const route = production ? process.env.NEXT_PUBLIC_SERVER_URL : "http://localhost:5000";
   
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -63,7 +61,7 @@ export default function Home() {
 
   const checkFormData = () => {
     const phoneNumberPatt = /^05\d{1}\d{3}\d{4}$/;
-    return fullName !== "" && phoneNumberPatt.test(phone) && hour !== -1;
+    return fullName !== "" && phoneNumberPatt.test(phone) && hoursComponents.length > 0;
   }
 
   useEffect(() => {
