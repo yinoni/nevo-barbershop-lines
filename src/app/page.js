@@ -68,7 +68,6 @@ export default function Home() {
     socket.connect();
 
     socket.on("connect", () => {
-      console.log("Connected to the server!", socket.id);
     });
 
     socket.on("updatedHours", (data) => {
