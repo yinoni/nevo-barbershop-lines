@@ -20,6 +20,8 @@ import CustomModal from "./components/CustomModal";
 import 'dayjs/locale/en-gb';
 import socket from "./socket";
 import {route} from './consts.js';
+import CustomAlert from "./components/CustomAlert";
+
 
 export default function Home() {
   
@@ -29,6 +31,7 @@ export default function Home() {
   const [date, setDate] = useState(dayjs());
   const [openModal, setOpenModal] = useState(false);
   const [hours, setHours] = useState([]);
+  const [alertState, setAlertState] = useState({active: false, text: "התור בוטל בהצלחה"});
   const hoursRef = useRef(hours);
   const dateRef = useRef(date);
 
@@ -64,6 +67,17 @@ export default function Home() {
     return fullName !== "" && phoneNumberPatt.test(phone) && hoursComponents.length > 0;
   }
 
+  const getHours = () => {
+    axios.post(`${route}/getHours`, {date: date.format("DD/MM/YYYY")})
+    .then(result => {
+      
+      setHours(result.data.hours);
+    })
+    .catch(error => {
+      console.log("Error! ====> ", error);
+    });
+  }
+
   useEffect(() => {
     socket.connect();
 
@@ -80,14 +94,7 @@ export default function Home() {
       }
     });
 
-    axios.post(`${route}/getHours`, {date: date.format("DD/MM/YYYY")})
-    .then(result => {
-      
-      setHours(result.data.hours);
-    })
-    .catch(error => {
-      console.log("Error! ====> ", error);
-    });
+    getHours();
 
     return () => {
       socket.off("connect");
@@ -101,6 +108,7 @@ export default function Home() {
 
   useEffect(() => {
     dateRef.current = date;
+    getHours();
   }, [date]);
 
   const onSubmit = async () => {
@@ -114,6 +122,23 @@ export default function Home() {
 
       setOpenModal (true)
     }
+  }
+
+  /*This function gets called when the users clicks on finish button on the modal*/
+  const onModalClose = async (cancelLine) => {
+    setOpenModal(false);
+
+    if(cancelLine){
+      socket.emit("cancelLine", {date: dayjs(date).format("DD/MM/YYYY"), hour: hours[hour]});
+      setAlertState({...alertState, active: true})
+    }
+    else{
+      setDate(dayjs());
+      setFullName("");
+      setHour(0);
+      setPhone("");
+    }
+
   }
 
   return (
@@ -157,7 +182,9 @@ export default function Home() {
       }
       
       <Button sx={{marginTop: 5}} disabled={!checkFormData()} onClick={onSubmit} variant="outlined">קבע תור</Button>
-      <CustomModal contentTxt='התור נקבע בהצלחה!' date={dayjs(date).format('DD/MM/YYYY')} hour={hours[hour]} openModal={openModal} />
+      <CustomModal onSubmit={onModalClose} contentTxt=' !התור נקבע בהצלחה ' date={dayjs(date).format('DD/MM/YYYY')} hour={hours[hour]} openModal={openModal} />
+      <CustomAlert active={alertState.active} text={alertState.text} onBtnClick={() => setAlertState({...alertState, active: false})} />
+    
     </div>
   );
 }
