@@ -42,3 +42,14 @@ a {
 .logo{
   margin-bottom: 20px;
 }
+
+.error-msg-container{
+  background-color: rgb(255, 166, 166);
+  padding: 7 13;
+  border-radius: 10;
+  margin-top: 15;
+}
+
+.error-msg-container .error-msg-txt{
+  font-size: 14;
+}
