@@ -21,10 +21,10 @@ import 'dayjs/locale/en-gb';
 import socket from "./socket";
 import {route} from './consts.js';
 import CustomAlert from "./components/CustomAlert";
+import ErrorMsg from "./components/ErrorMsg";
 
 
 export default function Home() {
-  
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [hour, setHour] = useState(0);
@@ -34,6 +34,7 @@ export default function Home() {
   const [alertState, setAlertState] = useState({active: false, text: "התור בוטל בהצלחה"});
   const hoursRef = useRef(hours);
   const dateRef = useRef(date);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const hoursComponents = hours.map((data, key) => {
     return <MenuItem key={key} value={key}>{data}</MenuItem>
@@ -113,14 +114,25 @@ export default function Home() {
 
   const onSubmit = async () => {
     if(fullName !== "" || phone !== "" || hour !== -1){
-      await socket.emit("addLine", {
+      let newLine = {
         fullName: fullName,
         phoneNumber: phone,
         hour: hours[hour],
         date: dayjs(date).format("DD/MM/YYYY")
-      });
-
-      setOpenModal (true)
+      };
+      try{
+        let result = await axios.post(`${route}/addLine`, {newLine: newLine});
+        setOpenModal(true);
+        setErrorMsg("");
+      }
+      catch(e){
+        let error_msg = "אירעה שגיאה. נסה שוב מאוחר יותר";
+        if(e)
+          error_msg = e.response.data.msg;
+        setErrorMsg(error_msg);
+        
+      }
+      
     }
   }
 
@@ -132,11 +144,13 @@ export default function Home() {
       socket.emit("cancelLine", {date: dayjs(date).format("DD/MM/YYYY"), hour: hours[hour]});
       setAlertState({...alertState, active: true})
     }
-    else{
+    else{ 
       setDate(dayjs());
       setFullName("");
       setHour(0);
       setPhone("");
+      setErrorMsg("");
+
     }
 
   }
@@ -184,7 +198,7 @@ export default function Home() {
       <Button sx={{marginTop: 5}} disabled={!checkFormData()} onClick={onSubmit} variant="outlined">קבע תור</Button>
       <CustomModal onSubmit={onModalClose} contentTxt=' !התור נקבע בהצלחה ' date={dayjs(date).format('DD/MM/YYYY')} hour={hours[hour]} openModal={openModal} />
       <CustomAlert active={alertState.active} text={alertState.text} onBtnClick={() => setAlertState({...alertState, active: false})} />
-    
+      { errorMsg !== "" && <ErrorMsg text={errorMsg} />}
     </div>
   );
 }
