@@ -197,8 +197,10 @@ export default function Home() {
       
       <Button sx={{marginTop: 5}} disabled={!checkFormData()} onClick={onSubmit} variant="outlined">קבע תור</Button>
       <CustomModal onSubmit={onModalClose} contentTxt=' !התור נקבע בהצלחה ' date={dayjs(date).format('DD/MM/YYYY')} hour={hours[hour]} openModal={openModal} />
-      <CustomAlert active={alertState.active} text={alertState.text} onBtnClick={() => setAlertState({...alertState, active: false})} />
-      { errorMsg !== "" && <ErrorMsg text={errorMsg} />}
+      <CustomAlert severity="success" active={alertState.active} text={alertState.text} onBtnClick={() => setAlertState({...alertState, active: false})} />
+      { 
+        <CustomAlert severity="error" active={errorMsg !== ""} text={errorMsg} onBtnClick={() => setErrorMsg("")} />
+      }
     </div>
   );
 }

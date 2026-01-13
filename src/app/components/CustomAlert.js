@@ -3,7 +3,7 @@ import Alert from '@mui/material/Alert';
 import xmark from '../../../public/assets/xmark.svg';
 import Image from "next/image";
 
-const CustomAlert = ({active, text, onBtnClick}) => {
+const CustomAlert = ({active, text, onBtnClick, severity}) => {
     return (
         active && 
         <Alert
@@ -13,7 +13,7 @@ const CustomAlert = ({active, text, onBtnClick}) => {
                     <Image src={xmark} alt="xmark" width={15} />
                 </button>
             }
-            
+            severity={severity} 
         >
             {text}
         </Alert>
